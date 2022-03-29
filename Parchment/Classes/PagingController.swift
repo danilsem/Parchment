@@ -85,6 +85,7 @@ final class PagingController: NSObject {
                 animated: false,
                 scrollPosition: options.scrollPosition
             )
+            offsetItemsIfNeeded()
 
         case .selected:
             if let currentPagingItem = state.currentPagingItem {
@@ -131,6 +132,8 @@ final class PagingController: NSObject {
                             animated: false,
                             scrollPosition: options.scrollPosition
                         )
+                        
+                        offsetItemsIfNeeded()
                     }
                 }
             }
@@ -207,6 +210,7 @@ final class PagingController: NSObject {
                     animated: options.menuTransition == .animateAfter,
                     scrollPosition: options.scrollPosition
                 )
+                offsetItemsIfNeeded()
             }
         } else {
             state = .selected(pagingItem: pagingItem)
@@ -224,6 +228,7 @@ final class PagingController: NSObject {
                 animated: options.menuTransition == .animateAfter,
                 scrollPosition: options.scrollPosition
             )
+            offsetItemsIfNeeded()
 
         default:
             if let pagingItem = state.currentPagingItem {
@@ -235,6 +240,7 @@ final class PagingController: NSObject {
                     animated: options.menuTransition == .animateAfter,
                     scrollPosition: options.scrollPosition
                 )
+                offsetItemsIfNeeded()
             }
         }
     }
@@ -264,6 +270,7 @@ final class PagingController: NSObject {
                 animated: false,
                 scrollPosition: options.scrollPosition
             )
+            offsetItemsIfNeeded()
 
         default:
             break
@@ -441,8 +448,9 @@ final class PagingController: NSObject {
             // animation in order to stop any ongoing scroll.
             if upcomingPagingItem != nil {
                 if collectionView.contentSize.width >= collectionView.bounds.width, state.progress != 0 {
+                    let displayItemsOffset = options.displayItemsOffset * abs(progress)
                     let contentOffset = CGPoint(
-                        x: initialContentOffset.x + (distance * abs(progress)),
+                        x: initialContentOffset.x - displayItemsOffset + (distance * abs(progress)),
                         y: initialContentOffset.y
                     )
                     collectionView.setContentOffset(contentOffset, animated: false)
@@ -648,6 +656,12 @@ final class PagingController: NSObject {
     private func hasItemAfter(pagingItem: PagingItem?) -> Bool {
         guard let item = pagingItem else { return false }
         return dataSource?.pagingItemAfter(pagingItem: item) != nil
+    }
+    
+    private func offsetItemsIfNeeded() {
+        var contentOffset = collectionView.contentOffset
+        contentOffset.x = max(0, contentOffset.x - options.displayItemsOffset)
+        collectionView.contentOffset = contentOffset
     }
 }
 
