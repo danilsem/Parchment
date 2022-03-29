@@ -29,6 +29,8 @@ class CalendarViewController: UIViewController {
         pagingViewController.register(CalendarPagingCell.self, for: CalendarItem.self)
         pagingViewController.menuItemSize = .fixed(width: 48, height: 58)
         pagingViewController.textColor = UIColor.gray
+        pagingViewController.displayItemsOffsetCount = 1
+        pagingViewController.selectedScrollPosition = .left
 
         // Add the paging view controller as a child view
         // controller and constrain it to all edges

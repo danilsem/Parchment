@@ -182,6 +182,12 @@ open class PagingViewController:
         get { return options.menuBackgroundColor }
         set { options.menuBackgroundColor = newValue }
     }
+    
+    /// Count of displaying items before selected item
+    public var displayItemsOffsetCount: Int {
+        get { return options.displayItemsOffsetCount }
+        set { options.displayItemsOffsetCount = newValue}
+    }
 
     /// The scroll navigation orientation of the content in the page
     /// view controller. _Default: .horizontal_

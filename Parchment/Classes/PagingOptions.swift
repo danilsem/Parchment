@@ -105,6 +105,8 @@ public struct PagingOptions {
     /// The scroll navigation orientation of the content in the page
     /// view controller. _Default: .horizontal_
     public var contentNavigationOrientation: PagingNavigationOrientation
+    
+    public var displayItemsOffsetCount: Int
 
     public var scrollPosition: UICollectionView.ScrollPosition {
         switch selectedScrollPosition {
@@ -130,6 +132,10 @@ public struct PagingOptions {
         case let .selfSizing(estimatedItemWidth, _):
             return estimatedItemWidth
         }
+    }
+    
+    public var displayItemsOffset: CGFloat {
+        return (menuItemSize.width + menuItemSpacing * 2) * CGFloat(displayItemsOffsetCount)
     }
 
     public init() {
@@ -173,5 +179,6 @@ public struct PagingOptions {
         indicatorColor = UIColor(red: 3 / 255, green: 125 / 255, blue: 233 / 255, alpha: 1)
         contentNavigationOrientation = .horizontal
         contentInteraction = .scrolling
+        displayItemsOffsetCount = 0
     }
 }
